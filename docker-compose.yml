@@ -1,0 +1,51 @@
+networks:
+  nginx-challenge:
+    driver: bridge
+
+services:
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nginx_challenge
+    volumes:
+      - ./db-data:/var/lib/mysql
+      - ./db/migrations:/docker-entrypoint-initdb.d
+    networks:
+      - nginx-challenge
+
+  app:
+    container_name: app
+    build:
+      context: ./server
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh node main.js
+    depends_on:
+      - db
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: nginx_challenge
+    volumes:
+      - ./server:/usr/src/app
+    networks:
+      - nginx-challenge
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    build:
+      context: ./nginx
+    depends_on:
+      - app
+    restart: always
+    tty: true
+    ports:
+      - '8080:80'
+    networks:
+      - nginx-challenge
