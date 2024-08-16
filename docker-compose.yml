@@ -22,7 +22,16 @@ services:
     container_name: app
     build:
       context: ./server
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh node main.js
+    entrypoint:
+      [
+        'dockerize',
+        '-wait',
+        'tcp://db:3306',
+        '-timeout',
+        '20s',
+        'node',
+        'main.js',
+      ]
     depends_on:
       - db
     environment:
@@ -31,8 +40,6 @@ services:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: nginx_challenge
-    volumes:
-      - ./server:/usr/src/app
     networks:
       - nginx-challenge
 
