@@ -40,6 +40,9 @@ services:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: nginx_challenge
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
     networks:
       - nginx-challenge
 
