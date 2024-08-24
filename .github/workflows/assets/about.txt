@@ -1,0 +1,1 @@
+The project is part of the course [Full Cycle](https://curso.fullcycle.com.br/curso-fullcycle/) which aims to develop large-scale applications.

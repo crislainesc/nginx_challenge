@@ -1,0 +1,3 @@
+- Server using Node.js
+- MySql database
+- Nginx as reverse proxy

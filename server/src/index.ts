@@ -31,7 +31,7 @@ server.get('/', async (req, res) => {
     const queryPromise = promisify(databaseConnection.query).bind(
       databaseConnection
     );
-    const people = await queryPromise(getQuery);
+    const people: Array<{name:string}> = await queryPromise(getQuery) as Array<{name:string}>;
 
     databaseConnection.end();
 

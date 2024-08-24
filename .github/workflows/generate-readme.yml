@@ -1,0 +1,31 @@
+name: Generate README
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Get Repository Name
+      id: repo-name
+      run: echo "::set-output name=name::${GITHUB_REPOSITORY##*/}"
+
+    - name: Convert Repository Name
+      id: convert-name
+      run: |
+        REPO_NAME="${{ steps.repo-name.outputs.name }}"
+        FORMATTED_NAME=$(echo "$REPO_NAME" | sed -e 's/_/ /g' -e 's/\b\(.\)/\u\1/g')
+        echo "::set-output name=formatted::${FORMATTED_NAME}"
+
+    - name: Generate README
+      uses: crislainesc/template/.github/workflows/generate-readme@main
+      with:
+        repo_name: ${{ steps.repo-name.outputs.name }}
+        formatted_name: ${{ steps.convert-name.outputs.formatted }}

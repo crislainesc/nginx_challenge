@@ -1,0 +1,4 @@
+- **[Node.js](https://nodejs.org/en)**
+- **[Docker](https://www.docker.com/)**
+- **[Nginx](https://nginx.org/)**
+- **[MySql](https://dev.mysql.com/)**
